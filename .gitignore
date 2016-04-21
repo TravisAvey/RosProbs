@@ -84,3 +84,4 @@ crashlytics-build.properties
 *.csproj
 *.sln
 AssemblyInfo.cs
+bin/
