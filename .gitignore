@@ -81,6 +81,6 @@ crashlytics-build.properties
 *CMakeLists.txt
 
 # CSharp files
-*/*.csproj
-*/*.sln
-*/AssemblyInfo.cs
+*.csproj
+*.sln
+AssemblyInfo.cs
