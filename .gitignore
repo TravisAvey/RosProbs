@@ -85,3 +85,4 @@ crashlytics-build.properties
 *.sln
 AssemblyInfo.cs
 bin/
+*.userprefs
