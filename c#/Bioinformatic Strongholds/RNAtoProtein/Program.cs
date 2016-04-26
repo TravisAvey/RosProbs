@@ -13,12 +13,14 @@ namespace RNAtoProtein
 		// init map of codons
 		private Dictionary<string, char> codon = new Dictionary<string, char> ();
 		// private string to hold DNA
-		private string DNA;
+		private string RNA;
 
 		// public constructor, pass in DNA and it will init the map
-		public TranslateRNA(string DNA)
+		public TranslateRNA(string RNA)
 		{
-			this.DNA = DNA;
+			// assign the dna string
+			this.RNA = RNA;
+			// init the codon dictionary
 			initCodon ();
 		}
 
@@ -27,21 +29,33 @@ namespace RNAtoProtein
 		 */ 
 		public string Translate()
 		{
-			int len = this.DNA.Length;
+			// get the length of the DNA string
+			int len = this.RNA.Length;
+
+			// init RNA string
 			string RNAstring = "";
+
+			// loop through the DNA string (-3, and by 3 for each codon)
 			for (int i=0; i<len-3;i+=3)
 			{
-				string sub = this.DNA.Substring (i, 3);
+				// get the sub string from current index
+				string sub = this.RNA.Substring (i, 3);
 
+				// if we have a stop codon, break out of loop
 				if (codon [sub] == 'X')
 					break;
 
+				// append codon to RNA string
 				RNAstring += codon [sub];
 			}
 
+			// return the completed RNA -> Protein string
 			return RNAstring;
 		}
 
+		/*
+		 * 	This method will init the dictionary for all the codons
+		 */ 
 		private void initCodon()
 		{
 			codon.Add ("UUU", 'F'); codon.Add ("CUU", 'L'); codon.Add ("AUU", 'I'); codon.Add ("GUU", 'V');
@@ -67,14 +81,20 @@ namespace RNAtoProtein
 	{
 		public static void Main (string[] args)
 		{
+			// open the file
 			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Bioinformatic Strongholds/RNAtoProtein/data.txt",
 			                           FileMode.Open, FileAccess.Read);
 
+			// use a stream reader on the file
 			using (var reader = new StreamReader(file))
 			{
-				string DNA = reader.ReadLine ();
+				// get the DNA 
+				string RNA = reader.ReadLine ();
 
-				TranslateRNA rna = new TranslateRNA (DNA);
+				// create a new RNA object, constructor takes RNA string
+				TranslateRNA rna = new TranslateRNA (RNA);
+
+				// output the results of the Translated RNA to Protein
 				Console.WriteLine(rna.Translate ());
 
 			}
