@@ -6,29 +6,37 @@ namespace MergeSortedArrays
 {
 	class MainClass
 	{
-		public static void Merge(List<int> A, int sizeA, List<int> B, int sizeB)
+		public static void Merge(int[] A, int[] B, int a, int b)
 		{
-			int i = 0, j = 0, k = 0;
+			// counter variables
+			int i = 0;
+			int j = 0;
+			int k = 0;
 
-			List<int> C = new List<int> ();
-			C.Capacity = sizeA + sizeB;
+			// array to hold merged array
+			int [] C = new int[a+b];
 
-			while (i < sizeA && j < sizeB)
+			// while we are less than a and b indices
+			while (i < a && j < b)
 			{
+				// if the A ele is <= to B, add to C
 				if (A [i] <= B [j])
 					C [k++] = A [i++];
 				else
+					// else, the Bs to C
 					C [k++] = B [j++];
 			}
 
-			if (i < sizeA)
+			if (i < a)
 			{
-				for (int m=i; m<sizeA; ++m)
+				// fill out the rest of the array
+				for (int m=i; m<a; ++m)
 					C [k++] = A [m];
 			}
 			else
 			{
-				for (int m=j; m<sizeB; ++m)
+				// fill out the rest of the array
+				for (int m=j; m<b; ++m)
 					C [k++] = B [m];
 			}
 
@@ -38,21 +46,26 @@ namespace MergeSortedArrays
 
 		public static void Main (string[] args)
 		{
+			// open the file
 			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/MergeSortedArrays/data.txt",
 			                           FileMode.Open, FileAccess.Read);
 
+			// using a stream reader on the opened file
 			using (var reader = new StreamReader(file))
 			{
+				// get the size of first array, parse to int
 				int aSize = int.Parse(reader.ReadLine ());
+				// get the next line, array
 				string arr = reader.ReadLine ();
-				List<int> A = new List<int> (Array.ConvertAll (arr.Split (' '), int.Parse));
+				// convert to an array, parsing on ' ' and parse to int
+				int[] A = new List<int> (Array.ConvertAll (arr.Split (' '), int.Parse)).ToArray();
+				// repeat above on 2nd array
 				int bSize = int.Parse (reader.ReadLine ());
 				arr = reader.ReadLine ();
-				List<int> B = new List<int> (Array.ConvertAll (arr.Split (' '), int.Parse));
+				int[] B = new List<int> (Array.ConvertAll (arr.Split (' '), int.Parse)).ToArray();
 
-
-
-				Merge (A, aSize, B, bSize);
+				// call Merge on the sorted arrays
+				Merge (A, B, aSize, bSize);
 			}
 		}
 	}
