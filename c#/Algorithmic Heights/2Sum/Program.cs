@@ -121,26 +121,26 @@ namespace Sum
 
 		static void FindValues (int size, int[] tokens, Dictionary<int, int> values)
 		{
-			for (int j = 0; j < size - 1; ++j) 
+			for (int i = 0; i < size; ++i) 
 			{
-				for (int k = 1; k < size; ++k) 
+				int n = BinarySearch (tokens, size, -tokens [i]);
+
+				if (n == -1) 
 				{
-					int a = tokens [j];
-					int b = tokens [k];
-					if (a == -b) 
-					{
-						Console.WriteLine ("{0} {1}", values [a], values [b]);
-						return;
-					}
+					Console.WriteLine (-1);
+					return;
 				}
+				int a = values [tokens [i]];
+				int b = values [tokens [n-1]];
+				Console.WriteLine("{0} {1}",a, b);
 			}
-			Console.WriteLine (-1);
+
 		}
 
 
 		public static void Main (string[] args)
 		{
-			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/2Sum/rosalind_2sum.txt",
+			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/2Sum/data.txt",
 			                          FileMode.Open, FileAccess.Read);
 
 			using (var reader = new StreamReader(file))
