@@ -123,18 +123,19 @@ namespace Sum
 		{
 			for (int i = 0; i < size; ++i) 
 			{
-				int n = BinarySearch (tokens, size, -tokens [i]);
+				int negative = -tokens [i];
+				int n = BinarySearch (tokens, size, negative);
 
-				if (n == -1) 
+				if (n != -1) 
 				{
-					Console.WriteLine (-1);
+					int a = values [tokens [i]];
+					int b = values [tokens [n-1]];
+					Console.WriteLine("{0} {1}",b, a);
 					return;
 				}
-				int a = values [tokens [i]];
-				int b = values [tokens [n-1]];
-				Console.WriteLine("{0} {1}",a, b);
-			}
 
+			}
+			Console.WriteLine (-1);
 		}
 
 
