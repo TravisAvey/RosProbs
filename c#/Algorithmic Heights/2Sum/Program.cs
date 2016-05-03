@@ -119,29 +119,41 @@ namespace Sum
 			return -1;
 		}
 
-		static void FindValues (int size, int[] tokens, Dictionary<int, int> values)
+		static void FindValues (int size, int[] A, Dictionary<int, int> values)
 		{
-			for (int i = 0; i < size; ++i) 
+			int[] ans = new int[2];
+			bool flag = false;
+
+			for (int i = 0; i < size-1; ++i) 
 			{
-				int negative = -tokens [i];
-				int n = BinarySearch (tokens, size, negative);
+				int negative = -A [i];
+				int n = BinarySearch (A, size, negative);
 
 				if (n != -1) 
 				{
-					int a = values [tokens [i]];
-					int b = values [tokens [n-1]];
-					Console.WriteLine("{0} {1}",b, a);
-					return;
+					int a = values [A [i]];
+					int b = values [A [n-1]];
+
+					if (a == b)
+						continue;
+
+					ans [0] = a;
+					ans [1] = b;
+					flag = true;
+
 				}
 
 			}
-			Console.WriteLine (-1);
+			if (flag)
+				Console.WriteLine ("{0} {1}", ans [0], ans [1]);
+			else
+				Console.WriteLine (-1);
 		}
 
 
 		public static void Main (string[] args)
 		{
-			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/2Sum/data.txt",
+			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/2Sum/rosalind_2sum.txt",
 			                          FileMode.Open, FileAccess.Read);
 
 			using (var reader = new StreamReader(file))
@@ -150,25 +162,25 @@ namespace Sum
 				List<int> arrInfo = new List<int> (Array.ConvertAll (line.Split (' '), int.Parse));
 				int arrays = arrInfo [0];
 				int size = arrInfo [1];
-				int[] tokens;
+				int[] A;
 				Dictionary<int, int> values;
 
 				for (int i=0; i<arrays; ++i)
 				{
 					string list = reader.ReadLine();
-					tokens = new List<int>(Array.ConvertAll (list.Split (' '), int.Parse)).ToArray();
+					A = new List<int>(Array.ConvertAll (list.Split (' '), int.Parse)).ToArray();
 					values = new Dictionary<int, int> ();
 
 					int n = 1;
-					foreach (int val in tokens)
+					foreach (int val in A)
 						values [val] = n++;
 
 					// sort array
-					Merge merge = new Merge (tokens, size);
+					Merge merge = new Merge (A, size);
 					merge.MergeSort ();
 
 
-					FindValues (size, tokens, values);
+					FindValues (size, A, values);
 
 
 				}
