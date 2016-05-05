@@ -17,25 +17,44 @@ namespace TwoWayPartition
 {
 	class MainClass
 	{
-		public static void Partition(int[] A, int size)
+		public static void Partition(int[] A, int lo, int hi)
 		{
-			int[] arr = new int[size];
+			int i = lo;
+			int j = hi + 1;
+			int v = A [0];
 
-			int i = 0;
-			while (i < size)
+			while (true)
 			{
-				if (A [0] >= A [i])
-					arr [i++] = A [i];
+				while (Less(A[++i], v))
+					if (i == hi)
+						break;
+
+				while (Less(v, A[--j]))
+				       if (j == lo)
+				       	break;
+
+				if (i >= j)
+					break;
+
+			//	Exch (A, i, j);
 			}
 
-			while (i < size)
-			{
-				if (A [0] < A [i])
-					arr [i++] = A [i];
-			}
+			Exch (A, lo, j);
 
-			foreach (int a in arr)
-				Console.WriteLine ("{0} ", a);
+			foreach (int a in A)
+				Console.Write ("{0} ", a);
+		}
+
+		private static bool Less(int v, int w)
+		{
+			return v.CompareTo (w) < 0;
+		}
+
+		private static void Exch(int[] a, int i, int j)
+		{
+			int swap = a [i];
+			a [i] = a [j];
+			a [j] = swap;
 		}
 
 		public static void Main (string[] args)
@@ -49,7 +68,7 @@ namespace TwoWayPartition
 				string line = reader.ReadLine ();
 				int[] A = new List<int> (Array.ConvertAll(line.Split(' '), int.Parse)).ToArray();
 
-				Partition (A, size);
+				Partition (A, 0, size-1);
 
 			}
 		}
