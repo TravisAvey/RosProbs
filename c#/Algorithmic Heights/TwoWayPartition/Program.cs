@@ -17,40 +17,36 @@ namespace TwoWayPartition
 {
 	class MainClass
 	{
-		public static void Partition(int[] A, int lo, int hi)
+		public static void Partition(int[] A, int l, int r)
 		{
-			int i = lo;
-			int j = hi + 1;
-			int v = A [0];
+			int p = A [l];
+			int i = l + 1;
 
-			while (true)
+			for (int j=i; j<r; ++j)
 			{
-				while (Less(A[++i], v))
-					if (i == hi)
-						break;
-
-				while (Less(v, A[--j]))
-				       if (j == lo)
-				       	break;
-
-				if (i >= j)
-					break;
-
-			//	Exch (A, i, j);
+				if (A[j] < p)
+				{
+					Swap (A, j, i);
+					i++;
+				}
 			}
 
-			Exch (A, lo, j);
+			Swap (A, l, i-1);
 
-			foreach (int a in A)
-				Console.Write ("{0} ", a);
+			PrintToFile (ref A);
 		}
 
-		private static bool Less(int v, int w)
+		private static void PrintToFile(ref int [] A)
 		{
-			return v.CompareTo (w) < 0;
+			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/TwoWayPartition/output.txt",
+			                          FileMode.Open, FileAccess.Write);
+			using (var writer = new StreamWriter(file)) 
+			{
+				foreach (int a in A)
+					writer.Write("{0} ", a);
+			}
 		}
-
-		private static void Exch(int[] a, int i, int j)
+		private static void Swap(int[] a, int i, int j)
 		{
 			int swap = a [i];
 			a [i] = a [j];
