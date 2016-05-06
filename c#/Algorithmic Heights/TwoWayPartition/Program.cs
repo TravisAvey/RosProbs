@@ -59,6 +59,26 @@ namespace TwoWayPartition
 			PrintToFile (ref A);
 		}
 
+		public static void partition(int [] A)
+		{
+			int i = -1;
+			int pos = -1;
+			int aperature = A [0];
+
+			while (i < A.Length-1)
+			{
+				i++;
+				if (A[i] <= aperature)
+				{
+					Swap (A, i, pos + 1);
+					pos++;
+				}
+			}
+
+			Swap (A, 0, pos);
+			PrintToFile (ref A);
+		}
+
 		/*
 		 * 	helper method to print data to a file for easier
 		 * 	answer upload
@@ -107,7 +127,10 @@ namespace TwoWayPartition
 				int[] A = new List<int> (Array.ConvertAll(line.Split(' '), int.Parse)).ToArray();
 
 				// call sub routine to partition array
-				Partition (A, 0, size-1);
+				//Partition (A, 0, size-1);
+
+				partition (A);
+
 			}
 		}
 	}
