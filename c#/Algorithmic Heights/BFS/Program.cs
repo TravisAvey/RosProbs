@@ -43,7 +43,32 @@ namespace BFS
 
 			public void BFS()
 			{
-				throw new NotImplementedException ();
+				// create a list to hold the output
+				List<int> output = new List<int> ();
+
+				// first node will always be itself == 0 jumps
+				output.Add (0);
+
+				// check from 1st node if it is possible to visit all the nodes..
+				int node = 1;
+				// start on second.. first is a visit to the first
+				for (int i=2; i<=nodes; ++i)
+				{
+					int jumps = 0;
+
+					// visit every possible route to node i from 1
+					List<int> path = graph [node];
+					foreach (int p in path)
+					{
+						if (p == i)
+							output.Add (jumps++);
+						else
+						{
+							// then grab the next list and repeat? Need a Queue instead of a list!!
+						}
+					}
+				}
+
 			}
 
 			public void GetInfo()
@@ -56,9 +81,8 @@ namespace BFS
 						Console.WriteLine ("{0} doesn't have any connections", i);
 					else
 					{
-						Console.Write ("Node {0} is connected to ", i);
 						foreach (int n in connections)
-							Console.Write ("{0} ", n);
+							Console.Write ("{0}->{1} ",i, n);
 						Console.WriteLine ();
 					}
 				}
@@ -87,7 +111,7 @@ namespace BFS
 					diGraph.Add (tokens [0], tokens [1]);
 				}
 
-				diGraph.BFS ();
+				diGraph.GetInfo ();
 			}
 		}
 	}
