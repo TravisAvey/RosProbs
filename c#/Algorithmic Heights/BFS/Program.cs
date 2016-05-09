@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace BFS
 {
@@ -38,37 +39,42 @@ namespace BFS
 					list = new List<int> ();
 					graph.Add (v, list);
 				}
+
 				graph [v].Add (w);
 			}
 
-			public void BFS()
+			public int BFS(int start, int tar)
 			{
-				// create a list to hold the output
-				List<int> output = new List<int> ();
+				bool[] visited = new bool[nodes+1];
+				int count = 0;
 
-				// first node will always be itself == 0 jumps
-				output.Add (0);
+				Queue<int> q = new Queue<int> ();
 
-				// check from 1st node if it is possible to visit all the nodes..
-				int node = 1;
-				// start on second.. first is a visit to the first
-				for (int i=2; i<=nodes; ++i)
+				// mark first explored
+				visited [0] = true;
+
+
+				q.Enqueue (start);
+				while (q.Count > 0)
 				{
-					int jumps = 0;
+					List<int> conns = graph [q.Dequeue ()];
 
-					// visit every possible route to node i from 1
-					List<int> path = graph [node];
-					foreach (int p in path)
+					foreach (int n in conns)
 					{
-						if (p == i)
-							output.Add (jumps++);
-						else
+						if (n == tar)
+							return ++count;
+						else if (!visited [n])
 						{
-							// then grab the next list and repeat? Need a Queue instead of a list!!
-						}
+							// set that it is visited
+							visited [n] = true;
+							q.Enqueue (n);
+						} 
 					}
-				}
+					count++;
 
+				}
+				// not found, return -1
+				return -1;
 			}
 
 			public void GetInfo()
@@ -86,6 +92,21 @@ namespace BFS
 						Console.WriteLine ();
 					}
 				}
+			}
+		}
+
+		private static void PrintToFile(ref List<int> A)
+		{
+			// open a file stream with access of write
+			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/BFS/output.txt",
+			                           FileMode.Open, FileAccess.Write);
+
+			// using a stream writer on the file stream
+			using (var writer = new StreamWriter(file)) 
+			{
+				// write each value to the file
+				foreach (int a in A)
+					writer.Write("{0} ", a);
 			}
 		}
 
@@ -111,7 +132,14 @@ namespace BFS
 					diGraph.Add (tokens [0], tokens [1]);
 				}
 
-				diGraph.GetInfo ();
+				List<int> results = new List<int> ();
+				results.Add (0);
+
+				for (int i = 2; i<=nodes; ++i)
+					results.Add(diGraph.BFS (1, i));
+
+				PrintToFile (ref results);
+
 			}
 		}
 	}
