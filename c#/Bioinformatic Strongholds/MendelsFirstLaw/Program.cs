@@ -6,34 +6,14 @@ namespace MendelsFirstLaw
 {
 	class MainClass
 	{
-		public static double AAandAA(double AA, double total)
+		public static double SameAlleles(double allele, double total)
 		{
-			return (AA / total) * (AA - 1) / (total - 1);
+			return (allele / total) * (allele - 1) / (total - 1);
 		}
 
-		public static double AAandAa(double AA, double Aa, double total)
+		public static double DifferentAlleles(double alleleA, double alleleB, double total)
 		{
-			return 2 * (AA / total) * (Aa / (total - 1));
-		}
-
-		public static double AAandaa(double AA, double aa, double total)
-		{
-			return 2 * (AA / total) * (aa / (total - 1));
-		}
-
-		public static double AaandAa(double Aa, double total)
-		{
-			return (Aa / total) * (Aa - 1) / (total - 1);
-		}
-
-		public static double Aaandaa(double Aa, double aa, double total)
-		{
-			return 2 * (Aa / total) * (aa / (total - 1));
-		}
-
-		public static double aaandaa(double aa, double total)
-		{
-			return (aa / total) * ((aa - 1) / (total - 1));
+			return 2 * (alleleA / total) * (alleleB / (total - 1));
 		}
 
 
@@ -52,22 +32,22 @@ namespace MendelsFirstLaw
 				double numaa = tokens [2];
 				double total = numAA + numAa + numaa;
 
-				double probAA_AA = AAandAA(numAA, total);
+				double probAA_AA = SameAlleles(numAA, total);
 				Console.WriteLine ("Probability of AA and AA {0}", probAA_AA);
 
-				double probAA_Aa = AAandAa (numAA, numAa, total);
+				double probAA_Aa = DifferentAlleles (numAA, numAa, total);
 				Console.WriteLine ("Probability of AA and Aa {0}", probAA_Aa);
 
-				double probAA_aa = AAandaa (numAA, numaa, total);
+				double probAA_aa = DifferentAlleles (numAA, numaa, total);
 				Console.WriteLine ("Probability of AA and aa {0}", probAA_aa);
 
-				double probAa_Aa = AaandAa (numAa, total);
+				double probAa_Aa = SameAlleles (numAa, total);
 				Console.WriteLine ("Probability of Aa and Aa {0}", probAa_Aa);
 
-				double probAa_aa = Aaandaa (numAa, numaa, total);
+				double probAa_aa = DifferentAlleles (numAa, numaa, total);
 				Console.WriteLine ("Probability of AA and aa {0}", probAa_aa);
 
-				double probaa_aa = aaandaa (numaa, total);
+				double probaa_aa = SameAlleles (numaa, total);
 				Console.WriteLine ("Probability of aa and aa {0}", probaa_aa);
 
 				double tot = probAA_AA + probAA_Aa + probAA_aa + probAa_Aa + probAa_aa + probaa_aa;
