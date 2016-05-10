@@ -14,10 +14,12 @@ namespace BFS
 		{
 			private int nodes;
 			private Dictionary<int, List<int>> graph = new Dictionary<int, List<int>>();
+			private int[] distance;
 
 			public DiGraph(int nodes)
 			{
 				this.nodes = nodes;
+				distance = new int[nodes+1];
 				InitGraph();
 			}
 
@@ -25,6 +27,14 @@ namespace BFS
 			{
 				for (int i=1; i<=nodes; ++i)
 					graph.Add (i, new List<int> ());
+
+				for (int j=0; j<=nodes; ++j)
+					distance [j] = -1;
+			}
+
+			public int distanceTo(int v)
+			{
+				return distance [v];
 			}
 
 			public void Add(int v, int w)
@@ -43,38 +53,32 @@ namespace BFS
 				graph [v].Add (w);
 			}
 
-			public int BFS(int start, int tar)
+			public void BFS(int tar)
 			{
-				bool[] visited = new bool[nodes+1];
-				int count = 0;
+				bool[] marked = new bool[nodes+1];
 
 				Queue<int> q = new Queue<int> ();
 
 				// mark first explored
-				visited [0] = true;
+				marked [1] = true;
+				distance [1] = 0;
 
-
-				q.Enqueue (start);
+				q.Enqueue (1);
 				while (q.Count > 0)
 				{
+					int v = q.Peek();
 					List<int> conns = graph [q.Dequeue ()];
 
 					foreach (int n in conns)
 					{
-						if (n == tar)
-							return ++count;
-						else if (!visited [n])
+						if (!marked[n])
 						{
-							// set that it is visited
-							visited [n] = true;
+							distance [n] = distance [v] + 1;
+							marked [n] = true;
 							q.Enqueue (n);
-						} 
+						}
 					}
-					count++;
-
 				}
-				// not found, return -1
-				return -1;
 			}
 
 			public void GetInfo()
@@ -112,7 +116,7 @@ namespace BFS
 
 		public static void Main (string[] args)
 		{
-			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/BFS/data.txt",
+			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/BFS/rosalind_bfs.txt",
 			                          FileMode.Open, FileAccess.Read);
 
 			using (var reader = new StreamReader(file))
@@ -133,10 +137,12 @@ namespace BFS
 				}
 
 				List<int> results = new List<int> ();
-				results.Add (0);
 
-				for (int i = 2; i<=nodes; ++i)
-					results.Add(diGraph.BFS (1, i));
+				for (int i=1; i<=nodes; ++i)
+					diGraph.BFS (i);
+
+				for (int i=1; i<=nodes; ++i)
+					results.Add (diGraph.distanceTo (i));
 
 				PrintToFile (ref results);
 
