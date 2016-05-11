@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 namespace ConnectedComponents
 {
-	/*
-	 * 	Simple ADT undirected Graph class
-	 */ 
+	/// <summary>
+	/// A simple Undirected Graph ADT
+	/// </summary>
 	class Graph
 	{
+		#region Private Variables
+
 		// number of nodes
 		private int nodes;
 		// the structure to hold the graph: dict of node with a list of connections to that node
@@ -18,7 +20,12 @@ namespace ConnectedComponents
 		// the count of connected components
 		private int count;
 
-		// Constructor, number of nodes for graph
+		#endregion
+
+		/// <summary>
+		/// Creates an empty graph with the number of nodes specified
+		/// </summary>
+		/// <param name="nodes">Nodes</param>
 		public Graph(int nodes)
 		{
 			// set the number of nodes
@@ -32,7 +39,9 @@ namespace ConnectedComponents
 			InitGraph ();
 		}
 
-		// helper method to set up graph
+		/// <summary>
+		/// Initializes the graph dictionary
+		/// </summary>
 		private void InitGraph()
 		{
 			// set each key in the graph to new list
@@ -40,20 +49,21 @@ namespace ConnectedComponents
 				graph.Add (i, new List<int> ());
 		}
 
-		// Count Property
+		/// <summary>
+		/// Gets the count of connected components
+		/// </summary>
+		/// <value>The count.</value>
 		public int Count
 		{
 			// getter only: return number of connected components
 			get {return count;}
 		}
 
-		/*
-		 * 	Method to add an edge.  Moved all the overhead
-		 *  that was needed here to Creation of the Graph
-		 *	object upon initialization.  Don't need to try
-		 *	because each key 1-node # was set up with a new
-		 *	list in InitGraph()
-		 */ 
+		/// <summary>
+		/// Add the nodes to the Graph.  Undirected, so both get added to eachother
+		/// </summary>
+		/// <param name="v">node</param>
+		/// <param name="w">node</param>
 		public void Add(int v, int w)
 		{
 			// undirected graph: add edge for both
@@ -61,12 +71,10 @@ namespace ConnectedComponents
 			graph [w].Add (v);
 		}
 
-		/*
-		 * 	The Depth First Search method.
-		 * 	This version uses recursion vs using
-		 * 	a stack.  (DFS with a stack is the same
-		 * 	as BFS)
-		 */ 
+		/// <summary>
+		/// Performs DFS on the Graph
+		/// </summary>
+		/// <param name="v">The node to start the DFS from</param>
 		private void DFS(int v)
 		{
 			// mark the passed in node as visited
@@ -84,10 +92,9 @@ namespace ConnectedComponents
 			}
 		}
 
-		/*
-		 * 	Public interface to get the number of 
-		 * 	connected components
-		 */ 
+		/// <summary>
+		/// Updates the number of connected components using a DFS
+		/// </summary>
 		public void connectedComponents()
 		{
 			// loop through each node in Graph
@@ -105,9 +112,9 @@ namespace ConnectedComponents
 			}
 		}
 
-		/*
-		 * 	Helper method to display the graph && debugging
-		 */ 
+		///<summary>
+		/// Helper method to Print out the Graph
+		/// </summary> 
 		public void PrintGraph()
 		{
 			// loop through each node
