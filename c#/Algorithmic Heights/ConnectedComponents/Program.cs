@@ -100,11 +100,10 @@ namespace ConnectedComponents
 			int prev = 0;
 			int result = 0;
 			foreach (int n in numConnections)
-				if (n == prev) {
-					
-					result++;
-				} else
+				if (n != prev) {
 					prev = n;
+					result++;
+				}
 			Console.WriteLine (result);
 		}
 
