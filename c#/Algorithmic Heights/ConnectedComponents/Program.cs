@@ -9,11 +9,15 @@ namespace ConnectedComponents
 		private int nodes;
 		private Dictionary<int, List<int>> graph = new Dictionary<int, List<int>>();
 		private bool[] marked;
+		private int[] id;
 		private int count;
 
 		public Graph(int nodes)
 		{
 			this.nodes = nodes;
+			count = 0;
+			marked = new bool[nodes + 1];
+
 			InitGraph ();
 		}
 
@@ -22,6 +26,11 @@ namespace ConnectedComponents
 			// set each key in the graph to new list
 			for (int i=1; i<=nodes; ++i)
 				graph.Add (i, new List<int> ());
+		}
+
+		public int Count
+		{
+			get {return count;}
 		}
 
 		/*
@@ -40,7 +49,7 @@ namespace ConnectedComponents
 
 		private void DFS(int v)
 		{
-			count++;
+			id [v] = count;
 			marked [v] = true;
 
 			List<int> conns = graph [v];
@@ -52,13 +61,17 @@ namespace ConnectedComponents
 			}
 		}
 
-		public int connectedComponents(int v)
+		public void connectedComponents()
 		{
-			count = 0;
-			marked = new bool[nodes+1];
-			DFS (v);
-			return count;
-
+			id = new int[nodes+1];
+			for (int i=1; i<=nodes; ++i)
+			{
+				if (!marked[i])
+				{
+					DFS (i);
+					count++;
+				}
+			}
 		}
 
 		/*
@@ -129,12 +142,8 @@ namespace ConnectedComponents
 					graph.Add (tokens [0], tokens [1]);
 				}
 
-				List<int> numConnections = new List<int> ();
-
-				for (int i=1; i<=nodes;++i)
-					numConnections.Add(graph.connectedComponents (i));
-
-				ComputeComponents (numConnections);
+				graph.connectedComponents ();
+				Console.WriteLine (graph.Count);
 
 			}
 		}
