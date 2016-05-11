@@ -8,6 +8,8 @@ namespace ConnectedComponents
 	{
 		private int nodes;
 		private Dictionary<int, List<int>> graph = new Dictionary<int, List<int>>();
+		private bool[] marked;
+		private int count;
 
 		public Graph(int nodes)
 		{
@@ -36,6 +38,29 @@ namespace ConnectedComponents
 			graph [w].Add (v);
 		}
 
+		private void DFS(int v)
+		{
+			count++;
+			marked [v] = true;
+
+			List<int> conns = graph [v];
+
+			foreach(int w in conns)
+			{
+				if (!marked [w])
+					DFS (w);
+			}
+		}
+
+		public int connectedComponents(int v)
+		{
+			count = 0;
+			marked = new bool[nodes+1];
+			DFS (v);
+			return count;
+
+		}
+
 		/*
 		 * 	Helper method to display the graph && debugging
 		 */ 
@@ -62,9 +87,30 @@ namespace ConnectedComponents
 
 	class MainClass
 	{
+		static void ComputeComponents (List<int> numConnections)
+		{
+			numConnections.Sort ();
+			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/ConnectedComponents/output.txt",
+			                          FileMode.Open, FileAccess.Write);
+			using (var writer = new StreamWriter(file))
+			{
+				foreach (int n in numConnections)
+					writer.WriteLine(n);
+			}
+			int prev = 0;
+			int result = 0;
+			foreach (int n in numConnections)
+				if (n == prev) {
+					
+					result++;
+				} else
+					prev = n;
+			Console.WriteLine (result);
+		}
+
 		public static void Main (string[] args)
 		{
-			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/ConnectedComponents/data.txt",
+			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/ConnectedComponents/rosalind_cc.txt",
 			                           FileMode.Open, FileAccess.Read);
 
 			using (var reader = new StreamReader(file))
@@ -84,7 +130,13 @@ namespace ConnectedComponents
 					graph.Add (tokens [0], tokens [1]);
 				}
 
-				graph.PrintGraph ();
+				List<int> numConnections = new List<int> ();
+
+				for (int i=1; i<=nodes;++i)
+					numConnections.Add(graph.connectedComponents (i));
+
+				ComputeComponents (numConnections);
+
 			}
 		}
 	}
