@@ -30,9 +30,14 @@ namespace BuildHeap
 
 			public void DisplayHeap()
 			{
-				for (int i=1; i<=size; i++)
-					Console.Write ("{0} ", mHeap [i]);
-				Console.WriteLine ();
+				var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/BuildHeap/output.txt",
+				                          FileMode.Open, FileAccess.Write);
+				using (var writer = new StreamWriter(file))
+				{
+					for (int i=1; i<=size; ++i)
+						writer.Write("{0} ", mHeap[i]);
+				}
+				
 			}
 
 			private void Insert(int n)
@@ -67,7 +72,7 @@ namespace BuildHeap
 		}
 		public static void Main (string[] args)
 		{
-			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/BuildHeap/data.txt",
+			var file = new FileStream (@"/home/travis/GitHub/RosProbs/c#/Algorithmic Heights/BuildHeap/rosalind_hea.txt",
 			                          FileMode.Open, FileAccess.Read);
 
 			using (var reader = new StreamReader(file))
